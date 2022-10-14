@@ -32,7 +32,7 @@ By saitizing the Input, we can ensure that SQL-Injections can be prevented. To f
 
 exact source link pinpointing flaw 2...
 
-### description of the flaw
+### Description of the flaw
 
 This example social media platform also allows users to send messages to each other. Since the content of the messages are not validated, a malicious user might try an attack by using cross site scripting to gain access to cookies from the recieving user.
 
@@ -42,11 +42,17 @@ To prevent XSS we have to ensure that no script tags can be sent using the chat.
 
 ## FLAW 3:
 
+### Location of the flaw
+
 exact source link pinpointing flaw 3...
 
-description of flaw 3...
+### Description of the flaw
 
-how to fix it...
+In the application, a user should be able to look at all the posts of another user but only if they have them in their friend list, but since the views are not checked, a user can access the posts of every other user by manipulating the URL.
+
+### How to fix it
+
+Before returning all the posts of a user we have to make sure that they are allowed to look at them.
 
 ## FLAW 4:
 
