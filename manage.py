@@ -4,7 +4,7 @@ import os
 import sys
 import sqlite3
 
-SERVER_DIR = 'src'
+SERVER_DIR = 'server'
 
 # Workaround to deal with TMC inability to handle binary database files
 # recreate the database file from a text dump

