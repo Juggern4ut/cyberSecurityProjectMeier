@@ -2,9 +2,10 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from .models import Friends, Message, Mail
+from .models import Friends, Message, Mail, Post
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+import sqlite3
 import json
 
 
@@ -25,6 +26,22 @@ def addView(request):
 
 
 @login_required
+def addPostView(request):
+    # Flaw 1 :
+    conn = sqlite3.connect('./server/db.sqlite3')
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO pages_post (author_id, content) VALUES (%i, '%s')" % (request.user.id, request.POST.get('content')))
+    conn.commit()
+    # : End of flaw 1
+
+    # Fix for flaw 1 :
+    #Post.objects.create(author=request.user, content=request.POST.get('content'))
+    # : End of fix
+    return redirect('/')
+
+
+@login_required
 def profileView(request, uid):
     profile = User.objects.get(id=uid)
     return render(request, 'pages/profile.html', {"username": profile.username})
@@ -32,8 +49,8 @@ def profileView(request, uid):
 
 @login_required
 def homePageView(request):
-	friends = Friends.objects.get(friend1=request.user.id)
-	return render(request, 'pages/index.html')
+    posts = Post.objects.filter(author=request.user)
+    return render(request, 'pages/index.html', {"posts": posts})
 
 
 @login_required

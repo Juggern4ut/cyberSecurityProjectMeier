@@ -1,43 +1,42 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>VisageMagazine</title>
-    </head>
+  <head>
+    <title>VisageMagazine</title>
+  </head>
 
+  <body>
+    <h1>VisageMagazine</h1>
 
-    <body>
-		<h1>VisageMagazine</h1>
+    <table>
+      <tr>
+        <th style="text-align: left">Username:</th>
+        <td>{{user.username}}</td>
+      </tr>
+    </table>
 
-        <table>
-		<tr>
-		<th style="text-align:left">Username: <td>{{user.username}} 
-		</table>
+    <form action="logout/" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="Logout" />
+    </form>
 
+    <h2>Your Posts</h2>
 
-        <form action='logout/' method="POST">
-			{% csrf_token %}
-            <input type="submit" value="Logout"/>
-        </form>
-		
-        <h2>Your Posts</h2>
+    {% for post in posts %}
 
-		{% for msg in msgs %}
+    <article>
+      <p>{{post.content}}</p>
+    </article>
 
-		<i>From {{msg.source.username}} to {{msg.target.username}}</i></br>
-		{{msg.content|safe}}
-		</br>
-		</br>
+    {% endfor %}
 
-		{% endfor %}
+    <h2>Publish a post to your friends</h2>
 
-        <h2>Publish a post to your friends</h2>
+    <form action="publishPost/" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <textarea name="content" cols="40" rows="5"></textarea><br />
+      <input type="submit" value="Send" />
+    </form>
 
-        <form action='publishPost/' method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-			<textarea name="content" cols="40" rows="5"></textarea><br/>
-            <input type="submit" value="Send"/>
-        </form>
-
-        <h2>Your friends</h2>
-    </body>
+    <h2>Your friends</h2>
+  </body>
 </html>

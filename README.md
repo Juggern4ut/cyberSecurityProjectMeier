@@ -16,7 +16,7 @@ No further installation is required, you can start the server by running the com
 
 ### Location of the flaw
 
-exact source link pinpointing flaw 1...
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L33
 
 ### Description of the flaw
 
@@ -24,7 +24,7 @@ This application allows a logged in user to post a text unto his or her profile 
 
 ### How to fix it
 
-By saitizing the Input, we can ensure that SQL-Injections can be prevented. To further harden our application we can also use `execute` instead of `executescript` since it allows only a single query to run.
+By saitizing the Input, we can ensure that SQL-Injections can be prevented. To further harden our application we can also use `execute` instead of `executescript` since it allows only a single query to run. An even better solution would be to use models. This solution is shown by the commented out code below the flaw.
 
 ## FLAW 2:
 
