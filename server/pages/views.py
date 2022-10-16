@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from .models import Friends, Message, Mail, Post
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+from bs4 import BeautifulSoup
 import sqlite3
 import json
 
@@ -18,11 +19,22 @@ def mailView(request):
 
 
 @login_required
-def addView(request):
-    target = User.objects.get(username=request.POST.get('to'))
+def addChatView(request):
+    partnerId = request.POST.get('partnerid')
+    target = User.objects.get(id=partnerId)
+
+    # Flaw 2 :
     Message.objects.create(source=request.user, target=target,
                            content=request.POST.get('content'))
-    return redirect('/')
+    # : End of flaw 2
+
+    # Fix for flaw 2 :
+    #soup = BeautifulSoup(request.POST.get('content'))
+    #content = soup.get_text()
+    #Message.objects.create(source=request.user, target=target,
+    #                      content=content)
+    # : End of fix
+    return redirect('/chat/'+partnerId)
 
 
 @login_required
@@ -54,8 +66,8 @@ def homePageView(request):
 
 
 @login_required
-def chatView(request):
+def chatView(request, uid):
+    partner = User.objects.get(id=uid)
     messages = Message.objects.filter(
-        Q(source=request.user) | Q(target=request.user))
-    users = User.objects.exclude(pk=request.user.id)
-    return render(request, 'pages/chat.html', {'msgs': messages, 'users': users})
+        (Q(source=request.user) & Q(target=partner)) | (Q(target=request.user) & Q(source=partner)))
+    return render(request, 'pages/chat.html', {'partner': partner, 'msgs': messages})

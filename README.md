@@ -16,7 +16,7 @@ No further installation is required, you can start the server by running the com
 
 ### Location of the flaw
 
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L33
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L43
 
 ### Description of the flaw
 
@@ -30,7 +30,7 @@ By saitizing the Input, we can ensure that SQL-Injections can be prevented. To f
 
 ### Location of the flaw
 
-exact source link pinpointing flaw 2...
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L27
 
 ### Description of the flaw
 

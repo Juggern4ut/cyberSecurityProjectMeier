@@ -6,7 +6,7 @@
 
 
     <body>
-		<h1>Chirper</h1>
+		<h1>VisageMagazin</h1>
 
         <table>
 		<tr>
@@ -19,7 +19,7 @@
             <input type="submit" value="Logout"/>
         </form>
 		
-        <h2>Your chirps</h2>
+        <h2>Your chat with {{partner.username}}</h2>
 
 		{% for msg in msgs %}
 
@@ -31,17 +31,11 @@
 		{% endfor %}
 
 
-        <h2>Send a chirp</h2>
+        <h2>Reply</h2>
 
-        <form action='add/' method="POST" enctype="multipart/form-data">
+        <form action='/addChat/' method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            To:
-            <select name="to">
-            {% for user in users %}
-                <option value="{{user.username}}">{{user.username}}</option>
-            {% endfor %}
-            </select><br/>
-
+            <input type="hidden" name="partnerid" value="{{partner.id}}" />
 			<textarea name="content" cols="40" rows="5"></textarea><br/>
             <input type="submit" value="Send"/>
         </form>
