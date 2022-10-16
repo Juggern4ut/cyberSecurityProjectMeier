@@ -22,7 +22,6 @@ def mailView(request):
 def imageView(request, fileid):
 
     f = File.objects.get(pk=fileid)
-    print(f.owner)
 
     # Flaw 4 :
     # Not checking if the user is allowed to see the image.
