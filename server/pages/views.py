@@ -31,7 +31,7 @@ def addChatView(request):
     # Fix for flaw 2 :
     #soup = BeautifulSoup(request.POST.get('content'))
     #content = soup.get_text()
-    #Message.objects.create(source=request.user, target=target,
+    # Message.objects.create(source=request.user, target=target,
     #                      content=content)
     # : End of fix
     return redirect('/chat/'+partnerId)
@@ -56,7 +56,19 @@ def addPostView(request):
 @login_required
 def profileView(request, uid):
     profile = User.objects.get(id=uid)
-    return render(request, 'pages/profile.html', {"username": profile.username})
+    posts = Post.objects.filter(author=uid)
+
+    # Flaw 3 :
+    # No check if the user is allowed to see the posts
+    # : End of flaw 3
+
+    # Fix for flaw 3 :
+    # areFriends = Friends.objects.filter((Q(friend1=request.user) & Q(friend2=uid)) | (Q(friend2=request.user) & Q(friend1=uid)))
+    # if areFriends.count() == 0 and request.user.id != uid:
+    #    return redirect('/')
+    # : End of fix
+
+    return render(request, 'pages/profile.html', {"username": profile.username, 'posts': posts})
 
 
 @login_required

@@ -44,7 +44,7 @@ To prevent XSS we have to ensure that no script tags can be sent using the chat.
 
 ### Location of the flaw
 
-exact source link pinpointing flaw 3...
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L61
 
 ### Description of the flaw
 
