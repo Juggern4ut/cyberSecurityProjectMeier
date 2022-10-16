@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import homePageView, addChatView, mailView, profileView, chatView, addPostView
+from .views import homePageView, addChatView, mailView, profileView, chatView, addPostView, imageView
 
 urlpatterns = [
     path('', homePageView, name='home'),
@@ -9,5 +9,6 @@ urlpatterns = [
     path('mail', mailView, name='mail'),
     path('chat/<int:uid>', chatView, name='chat'),
     path('publishPost/', addPostView, name='publishPost'),
-    path('profile/<int:uid>', profileView, name="profile")
+    path('profile/<int:uid>', profileView, name="profile"),
+    path('image/<int:fileid>', imageView, name="imageView")
 ]

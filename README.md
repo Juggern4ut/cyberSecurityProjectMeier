@@ -56,11 +56,17 @@ Before returning all the posts of a user we have to make sure that they are allo
 
 ## FLAW 4:
 
+### Location of the flaw
+
 exact source link pinpointing flaw 4...
 
-description of flaw 4...
+### Description of the flaw
 
-how to fix it...
+In the application users have the possibility to upload an image with their post that show up on their profile. Since we fixed in flaw 3 that users that are not friends cannot see each others posts we might assume that the images are safe too. But a clever attacker might realize that he can directly download images by manipulating the URL again.
+
+### How to fix it
+
+When the user tries to access an image directly via the url we need to make sure that the logged in user is allowed to access that image.
 
 ## FLAW 5:
 

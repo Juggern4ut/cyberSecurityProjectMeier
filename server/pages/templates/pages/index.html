@@ -29,11 +29,17 @@
 
     {% endfor %}
 
+    <h2>Your Photos</h2>
+    {% for photo in photos %}
+    <img width="250px" src="/image/{{photo.id}}" />
+    {% endfor %}
+
     <h2>Publish a post to your friends</h2>
 
     <form action="publishPost/" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <textarea name="content" cols="40" rows="5"></textarea><br />
+      <input type="file" name="file" />
       <input type="submit" value="Send" />
     </form>
 
