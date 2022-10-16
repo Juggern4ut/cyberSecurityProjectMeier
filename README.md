@@ -38,7 +38,7 @@ This example social media platform also allows users to send messages to each ot
 
 ### How to fix it
 
-To prevent XSS we have to ensure that no script tags can be sent using the chat. This can be done by parsing out the `<script>` tags from any user input.
+To prevent XSS we have to ensure that no script tags can be sent using the chat. This can be done by parsing out the `<script>` tags from any user input. FOr an even better solution we can use BeautifulSoup to parse out all the tags and be left with only text between the html-tags.
 
 ## FLAW 3:
 
