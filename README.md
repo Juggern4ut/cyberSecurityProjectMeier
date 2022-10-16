@@ -58,7 +58,7 @@ Before returning all the posts of a user we have to make sure that they are allo
 
 ### Location of the flaw
 
-exact source link pinpointing flaw 4...
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L26
 
 ### Description of the flaw
 
