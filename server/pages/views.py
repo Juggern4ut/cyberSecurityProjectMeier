@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from .models import Friends, Message, Mail, Post, File
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+from ratelimit.decorators import ratelimit
 from bs4 import BeautifulSoup
 import sqlite3
 import json
@@ -43,6 +44,7 @@ def imageView(request, fileid):
 
 
 @login_required
+# @ratelimit(method='POST', key='ip', rate='1/2s', block=True)
 def addChatView(request):
     partnerId = request.POST.get('partnerid')
     target = User.objects.get(id=partnerId)
@@ -62,6 +64,7 @@ def addChatView(request):
 
 
 @login_required
+# @ratelimit(method='POST', key='ip', rate='1/5s', block=True)
 def addPostView(request):
     # Flaw 1 :
     conn = sqlite3.connect('./server/db.sqlite3')

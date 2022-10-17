@@ -2,7 +2,7 @@
 
 ## A sample project that shows some common flaws in cybersecurity and how to fix them
 
-This is a project for the Cyber-Security course of the university of Helsinki.
+This is a project for the Cyber-Security course of the university of Helsinki. It shows a dummy social media application where users can send messages to eachother, create posts and upload images. The application handles a basic friend system. (Note: Who is a friend to who is hardcoded into the database). However there are several security flaws that are listed below and ways or ideas on how to fix them. In the code, the flaws are marked with comments and the fixes are all commented out. To check the fixes just comment out everything in the flaw and uncomment everything in the fix.
 
 ### Link:
 
@@ -16,7 +16,7 @@ No further installation is required, you can start the server by running the com
 
 ### Location of the flaw
 
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L43
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L69
 
 ### Description of the flaw
 
@@ -30,7 +30,7 @@ By saitizing the Input, we can ensure that SQL-Injections can be prevented. To f
 
 ### Location of the flaw
 
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L27
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L52
 
 ### Description of the flaw
 
@@ -44,7 +44,7 @@ To prevent XSS we have to ensure that no script tags can be sent using the chat.
 
 ### Location of the flaw
 
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L61
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L92
 
 ### Description of the flaw
 
@@ -52,13 +52,13 @@ In the application, a user should be able to look at all the posts of another us
 
 ### How to fix it
 
-Before returning all the posts of a user we have to make sure that they are allowed to look at them.
+Before returning all the posts of a user we have to make sure that they are allowed to look at them. Check out the commented out code below the flaw to see how the fix can be implemented.
 
 ## FLAW 4:
 
 ### Location of the flaw
 
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L26
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L27
 
 ### Description of the flaw
 
@@ -70,8 +70,17 @@ When the user tries to access an image directly via the url we need to make sure
 
 ## FLAW 5:
 
-exact source link pinpointing flaw 5...
+### Location of the flaw
 
-description of flaw 5...
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L47
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L67
 
-how to fix it...
+### Description of the flaw
+
+When a user adds a post, uploads an image or sends a message to another user, the server will have to process that request, edit the database and maybe also save a uploaded file. A malicious user could use this for a denial of service attack (DoS) by sending thousends of post requests to generate data on the server.
+
+### How to fix it
+
+There are many ways to make a denial of service attack more difficult. In this fix the library `django-ratelimit` is used which allows the developer to set a limit to certain views so that they cannot be called an unlimited amount of time.
+
+In this fix only the views that handle post requests have a rate limit set. In a productive system it might also make sense to limit the other views aswell. Using the same technique we could also limit the login attempts to prevent brute force attacks aswell.
