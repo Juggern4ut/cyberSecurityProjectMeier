@@ -130,6 +130,8 @@ def homePageView(request):
 @login_required
 def chatView(request, uid):
     partner = User.objects.get(id=uid)
+    if request.user.id == uid:
+        return redirect("/")
     messages = Message.objects.filter(
         (Q(source=request.user) & Q(target=partner)) | (Q(target=request.user) & Q(source=partner)))
     return render(request, 'pages/chat.html', {'partner': partner, 'msgs': messages})
