@@ -85,6 +85,8 @@ def addPostView(request):
 def profileView(request, uid):
     profile = User.objects.get(id=uid)
     posts = Post.objects.filter(author=uid)
+    files = File.objects.filter(owner=uid)
+    photos = [{'id': f.id, 'name': f.data.name.split('/')[-1]} for f in files]
 
     # Flaw 3 :
     # No check if the user is allowed to see the posts
@@ -96,7 +98,7 @@ def profileView(request, uid):
     #   return redirect('/')
     # : End of fix
 
-    return render(request, 'pages/profile.html', {"username": profile.username, 'posts': posts})
+    return render(request, 'pages/profile.html', {"username": profile.username, 'posts': posts, "photos": photos})
 
 
 @login_required
@@ -121,8 +123,7 @@ def homePageView(request):
         friends.append(User.objects.get(id=1))
         friends.append(User.objects.get(id=2))
 
-    photos = [{'id': f.id, 'name': '/user_2/' +
-               f.data.name.split('/')[-1]} for f in files]
+    photos = [{'id': f.id, 'name': f.data.name.split('/')[-1]} for f in files]
     return render(request, 'pages/index.html', {"posts": posts, "photos": photos, "friends": friends})
 
 

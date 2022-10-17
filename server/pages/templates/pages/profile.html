@@ -5,12 +5,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile of {{username}}</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+    />
   </head>
   <body>
-    <h1>Welcome to the Profile of {{username}}</h1>
-    <h2>Posts</h2>
-    {% for post in posts %}
-    <article>{{post.content|safe}}</article>
-    {% endfor %}
+    <nav class="navbar navbar-expand-lg bg-dark">
+      <div class="container-fluid">
+        <a style="color: #ddd" class="navbar-brand" href="/">VisageMagazine</a>
+        <form action="logout/" method="POST">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-danger" value="Logout" />
+        </form>
+      </div>
+    </nav>
+    <main style="padding: 20px 0; min-height: calc(100vh - 103px)" class="container">
+      <h1>Welcome to the Profile of {{username}}</h1>
+      <div class="row">
+        <section class="col">
+          <h2 style="margin: 20px 0 10px 0">Posts</h2>
+          {% for post in posts %}
+          <article class="card" style="margin-bottom: 10px">
+            <div class="card-body">
+              <p class="card-text">{{post.content}}</p>
+            </div>
+          </article>
+          {% endfor %}
+        </section>
+        <section class="col">
+          <h2 style="margin: 20px 0 10px 0">Photos</h2>
+          {% for photo in photos %}
+          <img
+            style="width: 250px; height: 250px; object-fit: cover"
+            src="/image/{{photo.id}}"
+          />
+          {% endfor %}
+        </section>
+      </div>
+    </main>
   </body>
 </html>
