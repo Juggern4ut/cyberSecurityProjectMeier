@@ -98,6 +98,7 @@ def profileView(request, uid):
 
     return render(request, 'pages/profile.html', {"username": profile.username, 'posts': posts})
 
+
 @login_required
 def addFileView(request):
     data = request.FILES.get('file')
@@ -111,9 +112,18 @@ def homePageView(request):
     posts = Post.objects.filter(author=request.user)
     files = File.objects.filter(owner=request.user)
 
+    friends = []
+    if request.user.id == 1:
+        friends.append(User.objects.get(id=3))
+    elif request.user.id == 2:
+        friends.append(User.objects.get(id=3))
+    elif request.user.id == 3:
+        friends.append(User.objects.get(id=1))
+        friends.append(User.objects.get(id=2))
+
     photos = [{'id': f.id, 'name': '/user_2/' +
                f.data.name.split('/')[-1]} for f in files]
-    return render(request, 'pages/index.html', {"posts": posts, "photos": photos})
+    return render(request, 'pages/index.html', {"posts": posts, "photos": photos, "friends": friends})
 
 
 @login_required
