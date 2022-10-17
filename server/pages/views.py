@@ -78,9 +78,6 @@ def addPostView(request):
     #Post.objects.create(author=request.user, content=request.POST.get('content'))
     # : End of fix
 
-    data = request.FILES.get('file')
-    f = File(owner=request.user, data=data)
-    f.save()
     return redirect('/')
 
 
@@ -95,17 +92,25 @@ def profileView(request, uid):
 
     # Fix for flaw 3 :
     # areFriends = Friends.objects.filter((Q(friend1=request.user) & Q(friend2=uid)) | (Q(friend2=request.user) & Q(friend1=uid)))
-    # if areFriends.count() == 0 and request.user.id != uid:
-    #    return redirect('/')
+    # if areFriends.count() == 0:
+    #   return redirect('/')
     # : End of fix
 
     return render(request, 'pages/profile.html', {"username": profile.username, 'posts': posts})
+
+@login_required
+def addFileView(request):
+    data = request.FILES.get('file')
+    f = File(owner=request.user, data=data)
+    f.save()
+    return redirect('/')
 
 
 @login_required
 def homePageView(request):
     posts = Post.objects.filter(author=request.user)
     files = File.objects.filter(owner=request.user)
+
     photos = [{'id': f.id, 'name': '/user_2/' +
                f.data.name.split('/')[-1]} for f in files]
     return render(request, 'pages/index.html', {"posts": posts, "photos": photos})

@@ -84,3 +84,7 @@ When a user adds a post, uploads an image or sends a message to another user, th
 There are many ways to make a denial of service attack more difficult. In this fix the library `django-ratelimit` is used which allows the developer to set a limit to certain views so that they cannot be called an unlimited amount of time.
 
 In this fix only the views that handle post requests have a rate limit set. In a productive system it might also make sense to limit the other views aswell. Using the same technique we could also limit the login attempts to prevent brute force attacks aswell.
+
+## Disclaimer
+
+This is only a demo project that is meant to display common security flaws. The focus has been put on the five flaws listed above and not on the usability or correctnes of the application. Do not use any of this code in a productive system.

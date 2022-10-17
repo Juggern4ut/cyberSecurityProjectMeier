@@ -11,6 +11,7 @@ def user_directory_path(instance, filename):
 
 
 class File(models.Model):
+    id = models.BigAutoField(primary_key=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     data = models.FileField(upload_to=user_directory_path)
 

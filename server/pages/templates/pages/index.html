@@ -2,47 +2,112 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>VisageMagazine</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+    />
   </head>
 
   <body>
-    <h1>VisageMagazine</h1>
+    <nav class="navbar navbar-expand-lg bg-dark">
+      <div class="container-fluid">
+        <a style="color: #ddd" class="navbar-brand" href="/">VisageMagazine</a>
+        <form action="logout/" method="POST">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-danger" value="Logout" />
+        </form>
+      </div>
+    </nav>
+    <main
+      style="padding: 20px 0; min-height: calc(100vh - 103px)"
+      class="container"
+    >
+      <h1>Welcome {{user.username}}</h1>
+      <div class="row">
+        <section class="col">
+          <h2 style="margin: 10px 0 10px 0">Publish a post to your friends</h2>
+          <div class="card">
+            <div class="card-body">
+              <form
+                action="publishPost/"
+                method="POST"
+                enctype="multipart/form-data"
+              >
+                {% csrf_token %}
+                <textarea
+                  class="form-control"
+                  name="content"
+                  rows="5"
+                ></textarea
+                ><br />
+                <input
+                  style="float: right"
+                  type="submit"
+                  class="btn btn-primary"
+                  value="Send"
+                />
+              </form>
+            </div>
+          </div>
+        </section>
+        <section class="col">
+          <h2 style="margin: 10px 0 10px 0">Upload a new Photo</h2>
+          <form action="addImage/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-    <table>
-      <tr>
-        <th style="text-align: left">Username:</th>
-        <td>{{user.username}}</td>
-      </tr>
-    </table>
+            <div class="card">
+              <div class="card-body">
+                <div class="custom-file">
+                  <input
+                    required="true"
+                    type="file"
+                    name="file"
+                    style="width: 100%"
+                    class="custom-file-input card"
+                    id="inputGroupFile01"
+                  />
+                </div>
+                <input
+                  type="submit"
+                  style="float: right; margin-top: 20px"
+                  class="btn btn-primary"
+                  value="Upload"
+                />
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
 
-    <form action="logout/" method="POST">
-      {% csrf_token %}
-      <input type="submit" value="Logout" />
-    </form>
+      <div class="row">
+        <section class="col">
+          <h2 style="margin: 20px 0 10px 0">Your Posts</h2>
+          {% for post in posts %}
 
-    <h2>Your Posts</h2>
+          <article class="card" style="margin-bottom: 10px">
+            <div class="card-body">
+              <p class="card-text">{{post.content}}</p>
+            </div>
+          </article>
 
-    {% for post in posts %}
+          {% endfor %}
+        </section>
 
-    <article>
-      <p>{{post.content}}</p>
-    </article>
-
-    {% endfor %}
-
-    <h2>Your Photos</h2>
-    {% for photo in photos %}
-    <img width="250px" src="/image/{{photo.id}}" />
-    {% endfor %}
-
-    <h2>Publish a post to your friends</h2>
-
-    <form action="publishPost/" method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      <textarea name="content" cols="40" rows="5"></textarea><br />
-      <input type="file" name="file" />
-      <input type="submit" value="Send" />
-    </form>
-
-    <h2>Your friends</h2>
+        <section class="col">
+          <h2 style="margin: 20px 0 10px 0">Your Photos</h2>
+          {% for photo in photos %}
+          <img
+            style="width: 250px; height: 250px; object-fit: cover"
+            src="/image/{{photo.id}}"
+          />
+          {% endfor %}
+        </section>
+      </div>
+    </main>
+    <footer class="bg-dark">
+      <p style="padding: 10px; font-size: 18px; color: #ddd; margin: 0px">
+        VisageMagazin &copy; 2022
+      </p>
+    </footer>
   </body>
 </html>
