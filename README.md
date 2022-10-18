@@ -12,6 +12,12 @@ This is a project for the Cyber-Security course of the university of Helsinki. I
 
 No further installation is required, you can start the server by running the command `python manage.py runserver` and view it on [http:127.0.0.1:8000]()
 
+Logins for the frontend are:
+
+- admin:admin
+- bob:squarepants
+- alice:redqueen
+
 ## FLAW 1:
 
 ### Location of the flaw
