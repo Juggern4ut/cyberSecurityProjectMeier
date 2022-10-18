@@ -69,7 +69,7 @@ def addPostView(request):
     # Flaw 1 :
     conn = sqlite3.connect('./server/db.sqlite3')
     cursor = conn.cursor()
-    cursor.execute(
+    cursor.executescript(
         "INSERT INTO pages_post (author_id, content) VALUES (%i, '%s')" % (request.user.id, request.POST.get('content')))
     conn.commit()
     # : End of flaw 1

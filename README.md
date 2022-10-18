@@ -30,7 +30,7 @@ https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages
 
 ### Description of the flaw
 
-This application allows a logged in user to post a text unto his or her profile page like one may find in popular social media platforms like Facebook or twitter, however the input of the field is not sanitized correctly and allows an attacker to execute SQL-Queries using SQL-Injections.
+This application allows a logged in user to post a text unto his or her profile page like one may find in popular social media platforms like Facebook or Twitter, however the input of the field is not sanitized correctly and allows an attacker to execute SQL-Queries using SQL-Injections. We can verify this huge security flaw by logging in as any user and create a new post with any SQL-Injection. For example: `this is my post'); INSERT INTO pages_post (author_id, content) VALUES (1, 'Im the admin and i stink!`
 
 ### How to fix it
 
@@ -44,11 +44,11 @@ https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages
 
 ### Description of the flaw
 
-This example social media platform also allows users to send messages to each other. Since the content of the messages are not validated, a malicious user might try an attack by using cross site scripting to gain access to cookies from the recieving user.
+This example social media platform also allows users to send messages to each other. Since the content of the messages are not validated, a malicious user might try an attack by using cross site scripting to gain access to cookies from the recieving user. To verify this problem, we can log in as any user and go to the chat view with any of his/her friends. If we now send a message containing a `<script>`-tag and send it, it will be executed when the recieving user opens the chat page.
 
 ### How to fix it
 
-To prevent XSS we have to ensure that no script tags can be sent using the chat. This can be done by parsing out the `<script>` tags from any user input. FOr an even better solution we can use BeautifulSoup to parse out all the tags and be left with only text between the html-tags.
+To prevent XSS we have to ensure that no script tags can be sent using the chat. This can be done by parsing out the `<script>` tags from any user input. For an even better solution we can use BeautifulSoup to parse out all the tags and be left with only text between the html-tags.
 
 ## FLAW 3:
 
@@ -58,11 +58,11 @@ https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages
 
 ### Description of the flaw
 
-In the application, a user should be able to look at all the posts of another user but only if they have them in their friend list, but since the views are not checked, a user can access the posts of every other user by manipulating the URL.
+In the application, a user should be able to look at all the posts of another user but only if they have them in their friend list, but since the views are not checked, a user can access the posts of every other user by manipulating the URL. A user that looks at the url might also quuickly realize that the user-ids are simply incrementing numbers, so guessing the url is not hard either. To verify this Problem we can simply login as bob and visit the profile of the admin user directly by going to `/profile/1` even though the admin is not in bobs friend list. Here are the ids of the users: admin = 1, bob = 2, alice = 3.
 
 ### How to fix it
 
-Before returning all the posts of a user we have to make sure that they are allowed to look at them. Check out the commented out code below the flaw to see how the fix can be implemented.
+Before returning all the posts of a user we have to make sure that they are allowed to look at them. Check out the commented out code below the flaw to see how the fix can be implemented. To futher increase the security the user ids also should not simply increment but be something random so users can not just 'guess' a valid profile URL.
 
 ## FLAW 4:
 
@@ -72,11 +72,11 @@ https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages
 
 ### Description of the flaw
 
-In the application users have the possibility to upload an image with their post that show up on their profile. Since we fixed in flaw 3 that users that are not friends cannot see each others posts we might assume that the images are safe too. But a clever attacker might realize that he can directly download images by manipulating the URL again.
+In the application users have the possibility to upload an image with their post that show up on their profile. Since we fixed in flaw 3 that users that are not friends cannot see each others posts we might assume that the images are safe too. But a clever attacker might realize that he can directly download images by manipulating the URL again. To verify this Problem we can once again login as bob and visit the url `/image/3` and download a image of the admin.
 
 ### How to fix it
 
-When the user tries to access an image directly via the url we need to make sure that the logged in user is allowed to access that image.
+When the user tries to access an image directly via the url we need to make sure that the logged in user is allowed to access that image. This solution is implemented in the commented out code below the flaw.
 
 ## FLAW 5:
 
