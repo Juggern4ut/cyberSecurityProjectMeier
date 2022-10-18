@@ -18,6 +18,10 @@ Logins for the frontend are:
 - bob:squarepants
 - alice:redqueen
 
+#### Problems with using this porject
+
+If any problems or unexpected behaviour occur when trying to use this project, send an email to lukas.meier@helsinki.fi
+
 ## FLAW 1:
 
 ### Location of the flaw
