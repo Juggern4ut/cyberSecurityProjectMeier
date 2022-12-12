@@ -1,0 +1,56 @@
+LINK: https://github.com/Juggern4ut/cyberSecurityProjectMeier
+
+INSTALLATION: Use like any normal django project with "python manage.py runserver". The usernames and passwords are admin:admin, alice:redqueen and bob:squarepants.
+I advise to check out the README.md in the repository instead of this text since it provides the same information but in more detail and with better formatting.
+
+FLAW 1:
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L69
+
+This application allows a logged in user to post a text unto his or her profile page like one may find in popular social media platforms like Facebook or Twitter, however the input of the field is not sanitized correctly and allows an attacker to execute SQL-Queries using SQL-Injections. We can verify this huge security flaw by logging in as any user and create a new post with any SQL-Injection. For example: "this is my post'); INSERT INTO pages_post (author_id, content) VALUES (1, 'Im the admin and i stink!"
+
+By saitizing the Input, we can ensure that SQL-Injections can be prevented. To further harden our application we can also use `execute` instead of `executescript` since it allows only a single query to run. An even better solution would be to use models. This solution is shown by the commented out code below the flaw.
+
+
+FLAW 2:
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L52
+
+This example social media platform also allows users to send messages to each other. Since we want to allow users for format their messages using HTML-Tags we have to add the |safe modifier to the view. But since the content of the messages are not validated, a malicious user might try an attack by using cross site scripting to gain access to cookies from the recieving user. To verify this problem, we can log in as any user and go to the chat view with any of his/her friends. If we now send a message containing a <script>-tag and send it, it will be executed when the recieving user opens the chat page.
+
+To prevent XSS we have to ensure that no script tags can be sent using the chat. This can be done by parsing out the <script> tags from any user input. For an even better solution we can use BeautifulSoup to parse out all the tags and be left with only text between the html-tags.
+
+
+FLAW 3.1:
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L92
+
+In the application, a user should be able to look at all the posts of another user but only if they have them in their friend list, but since the views are not checked, a user can access the posts of every other user by manipulating the URL. A user that looks at the url might also quuickly realize that the user-ids are simply incrementing numbers, so guessing the url is not hard either. To verify this Problem we can simply login as bob and visit the profile of the admin user directly by going to /profile/1 even though the admin is not in bobs friend list. Here are the ids of the users: admin = 1, bob = 2, alice = 3.
+
+Before returning all the posts of a user we have to make sure that they are allowed to look at them. Check out the commented out code below the flaw to see how the fix can be implemented. To futher increase the security the user ids also should not simply increment but be something random so users can not just 'guess' a valid profile URL.
+
+
+FLAW 3.2:
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L27
+
+In the application users have the possibility to upload an image with their post that show up on their profile. Since we fixed in flaw 3 that users that are not friends cannot see each others posts we might assume that the images are safe too. But a clever attacker might realize that he can directly download images by manipulating the URL again. To verify this Problem we can once again login as bob and visit the url /image/3 and download a image of the admin.
+
+When the user tries to access an image directly via the url we need to make sure that the logged in user is allowed to access that image. This solution is implemented in the commented out code below the flaw.
+
+FLAW 4:
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L16
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L39
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/index.html#L16
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L61
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L81
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/login.html#L17
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/profile.html#L18
+
+If requests to non side effect free methods (iE POST, PUT, DELETE) are not protected agains cross site request forgery (CSRF) a malicous user might be able to create a link to a website that if opened by the already logged in victim will send a request to our application. Since we do not check for the origin of the request, we assume it is legit and execute it.
+
+Luckily django has an easy way of preventing this Problem. First, we need to make sure, that all 'safe'-methods (as defined here: https://datatracker.ietf.org/doc/html/rfc7231.html#section-4.2.1) are free of side effects. (This should already be done by design). Next we can add '{% csrf_token %}' to the forms that use an 'unsafe' method (such as POST iE). This will send a CSRF-Token with the request that verififes the origin of the request as legit.
+
+FLAW 5:
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L47
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L67
+
+When a user adds a post, uploads an image or sends a message to another user, the server will have to process that request, edit the database and maybe also save a uploaded file. A malicious user could use this for a denial of service attack (DoS) by sending thousends of post requests to generate data on the server.
+
+There are many ways to make a denial of service attack more difficult. In this fix the library `django-ratelimit` is used which allows the developer to set a limit to certain views so that they cannot be called an unlimited amount of time. In this fix only the views that handle post requests have a rate limit set. In a productive system it might also make sense to limit the other views aswell. Using the same technique we could also limit the login attempts to prevent brute force attacks aswell.

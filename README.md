@@ -50,7 +50,7 @@ This example social media platform also allows users to send messages to each ot
 
 To prevent XSS we have to ensure that no script tags can be sent using the chat. This can be done by parsing out the `<script>` tags from any user input. For an even better solution we can use BeautifulSoup to parse out all the tags and be left with only text between the html-tags.
 
-## FLAW 3:
+## FLAW 3.1:
 
 ### Location of the flaw
 
@@ -64,7 +64,7 @@ In the application, a user should be able to look at all the posts of another us
 
 Before returning all the posts of a user we have to make sure that they are allowed to look at them. Check out the commented out code below the flaw to see how the fix can be implemented. To futher increase the security the user ids also should not simply increment but be something random so users can not just 'guess' a valid profile URL.
 
-## FLAW 4:
+## FLAW 3.2:
 
 ### Location of the flaw
 
@@ -77,6 +77,24 @@ In the application users have the possibility to upload an image with their post
 ### How to fix it
 
 When the user tries to access an image directly via the url we need to make sure that the logged in user is allowed to access that image. This solution is implemented in the commented out code below the flaw.
+
+## FLAW 4:
+
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L16
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L39
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/index.html#L16
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L61
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L81
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/login.html#L17
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/profile.html#L18
+
+### Description of the flaw
+
+If requests to non side effect free methods (iE POST, PUT, DELETE) are not protected agains cross site request forgery (CSRF) a malicous user might be able to create a link to a website that if opened by the already logged in victim will send a request to our application. Since we do not check for the origin of the request, we assume it is legit and execute it.
+
+### How to fix it
+
+Luckily django has an easy way of preventing this Problem. First, we need to make sure, that all 'safe'-methods (as defined here: https://datatracker.ietf.org/doc/html/rfc7231.html#section-4.2.1) are free of side effects. (This should already be done by design). Next we can add '{% csrf_token %}' to the forms that use an 'unsafe' method (such as POST iE). This will send a CSRF-Token with the request that verififes the origin of the request as legit.
 
 ## FLAW 5:
 

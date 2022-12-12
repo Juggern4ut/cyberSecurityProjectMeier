@@ -24,13 +24,13 @@ def imageView(request, fileid):
 
     f = File.objects.get(pk=fileid)
 
-    # Flaw 4 :
+    # Flaw 3.2 :
     # Not checking if the user is allowed to see the image.
     # User could open url /image/1 to download the image with id 1
     # no matter if he or she is allowed to do so
-    # : End of flaw 4
+    # : End of flaw 3.2
 
-    # Fix for flaw 4 :
+    # Fix for flaw 3.2 :
     # areFriends = Friends.objects.filter((Q(friend1=request.user) & Q(friend2=f.owner.id)) | (Q(friend2=request.user) & Q(friend1=f.owner.id)))
     # if areFriends.count() == 0 and request.user.id != f.owner.id:
     #   return redirect('/')
@@ -88,11 +88,11 @@ def profileView(request, uid):
     files = File.objects.filter(owner=uid)
     photos = [{'id': f.id, 'name': f.data.name.split('/')[-1]} for f in files]
 
-    # Flaw 3 :
+    # Flaw 3.1 :
     # No check if the user is allowed to see the posts
     # : End of flaw 3
 
-    # Fix for flaw 3 :
+    # Fix for flaw 3.1 :
     # areFriends = Friends.objects.filter((Q(friend1=request.user) & Q(friend2=uid)) | (Q(friend2=request.user) & Q(friend1=uid)))
     # if areFriends.count() == 0:
     #   return redirect('/')
