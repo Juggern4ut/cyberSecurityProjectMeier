@@ -44,7 +44,7 @@ https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages
 
 ### Description of the flaw
 
-This example social media platform also allows users to send messages to each other. Since the content of the messages are not validated, a malicious user might try an attack by using cross site scripting to gain access to cookies from the recieving user. To verify this problem, we can log in as any user and go to the chat view with any of his/her friends. If we now send a message containing a `<script>`-tag and send it, it will be executed when the recieving user opens the chat page.
+This example social media platform also allows users to send messages to each other. Since we want to allow users for format their messages using HTML-Tags we have to add the `|safe` template filter to the view. But since the content of the messages are not validated, a malicious user might try an attack by using cross site scripting to gain access to cookies from the recieving user. To verify this problem, we can log in as any user and go to the chat view with any of his/her friends. If we now send a message containing a `<script>`-tag and send it, it will be executed when the recieving user opens the chat page.
 
 ### How to fix it
 

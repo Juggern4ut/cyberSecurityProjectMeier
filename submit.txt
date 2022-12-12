@@ -14,7 +14,7 @@ By saitizing the Input, we can ensure that SQL-Injections can be prevented. To f
 FLAW 2:
 https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L52
 
-This example social media platform also allows users to send messages to each other. Since we want to allow users for format their messages using HTML-Tags we have to add the |safe modifier to the view. But since the content of the messages are not validated, a malicious user might try an attack by using cross site scripting to gain access to cookies from the recieving user. To verify this problem, we can log in as any user and go to the chat view with any of his/her friends. If we now send a message containing a <script>-tag and send it, it will be executed when the recieving user opens the chat page.
+This example social media platform also allows users to send messages to each other. Since we want to allow users for format their messages using HTML-Tags we have to add the |safe template filter to the view. But since the content of the messages are not validated, a malicious user might try an attack by using cross site scripting to gain access to cookies from the recieving user. To verify this problem, we can log in as any user and go to the chat view with any of his/her friends. If we now send a message containing a <script>-tag and send it, it will be executed when the recieving user opens the chat page.
 
 To prevent XSS we have to ensure that no script tags can be sent using the chat. This can be done by parsing out the <script> tags from any user input. For an even better solution we can use BeautifulSoup to parse out all the tags and be left with only text between the html-tags.
 
