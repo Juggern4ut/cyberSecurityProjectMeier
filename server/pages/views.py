@@ -44,7 +44,7 @@ def imageView(request, fileid):
 
 
 @login_required
-# @ratelimit(method='POST', key='ip', rate='1/2s', block=True)
+# @ratelimit(method='GET', key='ip', rate='1/2s', block=True)
 def addChatView(request):
     partnerId = request.GET.get('partnerid')
     target = User.objects.get(id=partnerId)
@@ -55,8 +55,9 @@ def addChatView(request):
     # : End of flaw 2
 
     # Fix for flaw 2 :
-    #soup = BeautifulSoup(request.POST.get('content'))
-    #content = soup.get_text()
+    # soup = BeautifulSoup(request.GET.get('content'))
+    # soup.script.decompose()
+    # content = str(soup)
     # Message.objects.create(source=request.user, target=target,
     #                      content=content)
     # : End of fix
