@@ -46,12 +46,12 @@ def imageView(request, fileid):
 @login_required
 # @ratelimit(method='POST', key='ip', rate='1/2s', block=True)
 def addChatView(request):
-    partnerId = request.POST.get('partnerid')
+    partnerId = request.GET.get('partnerid')
     target = User.objects.get(id=partnerId)
 
     # Flaw 2 :
     Message.objects.create(source=request.user, target=target,
-                           content=request.POST.get('content'))
+                           content=request.GET.get('content'))
     # : End of flaw 2
 
     # Fix for flaw 2 :

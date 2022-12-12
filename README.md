@@ -10,7 +10,7 @@ This is a project for the Cyber-Security course of the university of Helsinki. I
 
 ### Installation:
 
-No further installation is required, you can start the server by running the command `python manage.py runserver` and view it on [http:127.0.0.1:8000]()
+One of the flaws requires the package "django-ratelimit" to be installed, you can do so by running the following command: `pip install django-ratelimit`. Other than that no further installation is required, you can start the server by running the command `python manage.py runserver` and view it on [http:127.0.0.1:8000]()
 
 Logins for the frontend are:
 
@@ -80,21 +80,15 @@ When the user tries to access an image directly via the url we need to make sure
 
 ## FLAW 4:
 
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L16
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L39
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/index.html#L16
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L61
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L81
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/login.html#L17
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/profile.html#L18
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L40
 
 ### Description of the flaw
 
-If requests to non side effect free methods (iE POST, PUT, DELETE) are not protected agains cross site request forgery (CSRF) a malicous user might be able to create a link to a website that if opened by the already logged in victim will send a request to our application. Since we do not check for the origin of the request, we assume it is legit and execute it.
+If requests are not protected agains cross site request forgery (CSRF) a malicous user might be able to create a link to a website that if opened by the already logged in victim will send a request to our application. Since we do not check for the origin of the request, we assume it is legit and execute it.
 
 ### How to fix it
 
-Luckily django has an easy way of preventing this Problem. First, we need to make sure, that all 'safe'-methods (as defined here: https://datatracker.ietf.org/doc/html/rfc7231.html#section-4.2.1) are free of side effects. (This should already be done by design). Next we can add '{% csrf_token %}' to the forms that use an 'unsafe' method (such as POST iE). This will send a CSRF-Token with the request that verififes the origin of the request as legit.
+Luckily django forces us to use the '{% csrf_token}' in forms that use 'unsafe' methods (as defined here: https://datatracker.ietf.org/doc/html/rfc7231.html#section-4.2.1) But it doesn't do so for 'safe' methods such as GET. Now GET methods should by design not cause any side effects. So no data on the server side should be changed by it. If we can not (or have any other reason not to) stick to that rule, we have to make sure to add the csrf_token to the form as to prive the origin of the request and prevent a CSRF-Attack. In this example flaw, it would also make sense to switch the form in the chat to action type "submit" since there is no particular reason not to do so.
 
 ## FLAW 5:
 

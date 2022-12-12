@@ -13,7 +13,7 @@
       <div class="container-fluid">
         <a style="color: #ddd" class="navbar-brand" href="/">VisageMagazine</a>
         <form action="logout/" method="POST">
-          <!-- {% csrf_token %} -->
+          {% csrf_token %} 
           <input type="submit" class="btn btn-danger" value="Logout" />
         </form>
       </div>
@@ -34,9 +34,10 @@
       {% endfor %}
 
       <h4>Reply</h4>
-
-      <form action="/addChat/" method="POST" enctype="multipart/form-data">
-        <!-- {% csrf_token %} -->
+      
+      <!-- FIX FOR FLAW 4: Change the method to POST and add the csrf-token back into the form -->
+      <form action="/addChat/" method="GET" enctype="multipart/form-data">
+        <!-- {% csrf_token %} --> 
         <input type="hidden" name="partnerid" value="{{partner.id}}" />
         <textarea name="content" style="width: 100%" rows="1"></textarea><br />
         <input

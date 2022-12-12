@@ -13,7 +13,7 @@
       <div class="container-fluid">
         <a style="color: #ddd" class="navbar-brand" href="/">VisageMagazine</a>
         <form action="logout/" method="POST">
-          <!-- {% csrf_token %} -->
+          {% csrf_token %} 
           <input type="submit" class="btn btn-danger" value="Logout" />
         </form>
       </div>
@@ -58,7 +58,7 @@
                 method="POST"
                 enctype="multipart/form-data"
               >
-                <!-- {% csrf_token %} -->
+                {% csrf_token %} 
                 <textarea
                   class="form-control"
                   name="content"
@@ -78,7 +78,7 @@
         <section class="col">
           <h2 style="margin: 10px 0 10px 0">Upload a new Photo</h2>
           <form action="addImage/" method="POST" enctype="multipart/form-data">
-            <!-- {% csrf_token %} -->
+            {% csrf_token %} 
 
             <div class="card">
               <div class="card-body">
