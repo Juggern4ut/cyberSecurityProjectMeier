@@ -40,7 +40,7 @@ By saitizing the Input, we can ensure that SQL-Injections can be prevented. To f
 
 ### Location of the flaw
 
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/template/pages/chat.html#L31
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L31
 
 ### Description of the flaw
 

@@ -12,7 +12,7 @@ By saitizing the Input, we can ensure that SQL-Injections can be prevented. To f
 
 
 FLAW 2:
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/template/pages/chat.html#L31
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L31
 
 This example social media platform also allows users to send messages to each other. Due to bad configuration we passed the |safe template filter to the template exposing our application to XSS-Attacks. Since the content of the messages are not validated, a malicious user might try an attack by using cross site scripting to gain access to cookies from the recieving user. To verify this problem, we can log in as any user and go to the chat view with any of his/her friends. If we now send a message containing a <script>-tag and send it, it will be executed when the recieving user opens the chat page.
 
