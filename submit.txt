@@ -12,11 +12,11 @@ By saitizing the Input, we can ensure that SQL-Injections can be prevented. To f
 
 
 FLAW 2:
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L52
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/template/pages/chat.html#L31
 
-This example social media platform also allows users to send messages to each other. Since we want to allow users for format their messages using HTML-Tags we have to add the |safe template filter to the view. But since the content of the messages are not validated, a malicious user might try an attack by using cross site scripting to gain access to cookies from the recieving user. To verify this problem, we can log in as any user and go to the chat view with any of his/her friends. If we now send a message containing a <script>-tag and send it, it will be executed when the recieving user opens the chat page.
+This example social media platform also allows users to send messages to each other. Due to bad configuration we passed the |safe template filter to the template exposing our application to XSS-Attacks. Since the content of the messages are not validated, a malicious user might try an attack by using cross site scripting to gain access to cookies from the recieving user. To verify this problem, we can log in as any user and go to the chat view with any of his/her friends. If we now send a message containing a <script>-tag and send it, it will be executed when the recieving user opens the chat page.
 
-To prevent XSS we have to ensure that no script tags can be sent using the chat. This can be done by parsing out the <script> tags from any user input. For an even better solution we can use BeautifulSoup to parse out all the tags and be left with only text between the html-tags.
+To prevent XSS we have to ensure that no script tags can be sent using the chat. The easiest way is to just remove the |safe filter from the template. Now all tags will be parsed out automatically. Another solution could be to manually parsing out the <script> tags from any user input or we could use BeautifulSoup to parse out all the tags and be left with only text between the html-tags. For this project, we will go with the simpelest solution and just remove the |safe filter.
 
 
 FLAW 3.1:
@@ -36,10 +36,11 @@ When the user tries to access an image directly via the url we need to make sure
 
 FLAW 4:
 https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L40
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L49
 
 If requests are not protected agains cross site request forgery (CSRF) a malicous user might be able to create a link to a website that if opened by the already logged in victim will send a request to our application. Since we do not check for the origin of the request, we assume it is legit and execute it.
 
-Luckily django forces us to use the '{% csrf_token}' in forms that use 'unsafe' methods (as defined here: https://datatracker.ietf.org/doc/html/rfc7231.html#section-4.2.1) But it doesn't do so for 'safe' methods such as GET. Now GET methods should by design not cause any side effects. So no data on the server side should be changed by it. If we can not (or have any other reason not to) stick to that rule, we have to make sure to add the csrf_token to the form as to prive the origin of the request and prevent a CSRF-Attack. In this example flaw, it would also make sense to switch the form in the chat to action type "submit" since there is no particular reason not to do so.
+Luckily django forces us to use the '{% csrf_token}' in forms that use 'unsafe' methods (as defined here: https://datatracker.ietf.org/doc/html/rfc7231.html#section-4.2.1) But it doesn't do so for 'safe' methods such as GET. Now GET methods should by design not cause any side effects. So no data on the server side should be changed by it. If we can not (or have any other reason not to) stick to that rule, we have to make sure to add the csrf_token to the form as to prive the origin of the request and prevent a CSRF-Attack. In this example flaw, it would also make sense to switch the form in the chat to action type "POST" since there is no particular reason not to do so.
 
 FLAW 5:
 https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L47

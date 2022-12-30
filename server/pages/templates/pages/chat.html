@@ -27,7 +27,13 @@
       {% for msg in msgs %}
 
       <i>From {{msg.source.username}} to {{msg.target.username}}</i><br />
+      <!-- Flaw 2 : -->
       {{msg.content|safe}}
+      <!-- : End of flaw 2 -->
+
+      <!-- Fix for flaw 2: Remove the |safe template -->
+      <!-- {{msg.content}} -->
+      <!-- : End of fix -->
       <br />
       <br />
 

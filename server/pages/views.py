@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from .models import Friends, Message, Mail, Post, File
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
-from ratelimit.decorators import ratelimit
+#from ratelimit.decorators import ratelimit
 from bs4 import BeautifulSoup
 import sqlite3
 import json
@@ -46,21 +46,20 @@ def imageView(request, fileid):
 @login_required
 # @ratelimit(method='GET', key='ip', rate='1/2s', block=True)
 def addChatView(request):
+    # Flaw 4:
     partnerId = request.GET.get('partnerid')
     target = User.objects.get(id=partnerId)
-
-    # Flaw 2 :
     Message.objects.create(source=request.user, target=target,
                            content=request.GET.get('content'))
-    # : End of flaw 2
+    # : End of flaw 4
 
-    # Fix for flaw 2 :
-    # soup = BeautifulSoup(request.GET.get('content'))
-    # soup.script.decompose()
-    # content = str(soup)
+    # Fix for flaw 4: Change all GET in this function to POST
+    # partnerId = request.POST.get('partnerid')
+    # target = User.objects.get(id=partnerId)
     # Message.objects.create(source=request.user, target=target,
-    #                      content=content)
+    #                      content=request.POST.get('content'))
     # : End of fix
+
     return redirect('/chat/'+partnerId)
 
 
