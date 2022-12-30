@@ -35,7 +35,7 @@ In the application users have the possibility to upload an image with their post
 When the user tries to access an image directly via the url we need to make sure that the logged in user is allowed to access that image. This solution is implemented in the commented out code below the flaw.
 
 FLAW 4:
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L40
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L44
 https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L49
 
 If requests are not protected agains cross site request forgery (CSRF) a malicous user might be able to create a link to a website that if opened by the already logged in victim will send a request to our application. Since we do not check for the origin of the request, we assume it is legit and execute it.
