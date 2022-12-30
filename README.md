@@ -80,7 +80,7 @@ When the user tries to access an image directly via the url we need to make sure
 
 ## FLAW 4:
 
-https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L40
+https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/templates/pages/chat.html#L44
 https://github.com/Juggern4ut/cyberSecurityProjectMeier/blob/master/server/pages/views.py#L49
 
 ### Description of the flaw
